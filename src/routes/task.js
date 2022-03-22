@@ -9,6 +9,15 @@ router.get('/', async (req, res) => {
     res.json(tasks);
 });
 
+router.get('/:id', async (req, res) => {
+    await Task.findById(req.params.id, (err, task) => {
+        if (err) return res.status(500).send(err);
+        if (!task) return res.status(404).send(`The task with the given ID ${req.params.id} was not found.`);
+        res.json(task);
+    });
+});
+
+
 // Create a new task and save it to the database
 router.post('/', async (req, res) => {
     const { title, description } = req.body;

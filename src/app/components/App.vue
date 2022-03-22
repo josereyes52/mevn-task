@@ -22,7 +22,10 @@
                                 placeholder="Insert a description">
                                 </textarea>
                             </div>
-                            <div class="d-grid gab-2 pt-2">
+                            <div class="d-grid gab-2 pt-2" v-if="taskId">
+                                <button class="btn btn-primary btn-lg">update</button>
+                            </div>
+                            <div class="d-grid gab-2 pt-2" v-else >
                                 <button class="btn btn-primary btn-lg">Send</button>
                             </div>
                         </form>
@@ -47,6 +50,7 @@
                             <td>{{task.description}}</td>
                             <td>
                                 <button class="btn btn-danger" @click="deleteTask(task)">Delete</button>
+                                <button class="btn btn-primary" @click="updateTask(task)">Edit</button>
                             </td>
                         </tr>
                     </tbody>
@@ -74,7 +78,8 @@ export default {
     data () {
         return {
             task: new Task(),
-            tasks: []
+            tasks: [],
+            taskId: null
         }
     },
     created () {
@@ -89,20 +94,37 @@ export default {
             })
         },
         addTask () {
-            fetch('/api/tasks',{
-                method: 'POST',
-                body: JSON.stringify(this.task),
-                headers: {
-                    'accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                this.getTasks();
-            });
+            if(this.taskId){
+                fetch(`/api/tasks/${this.taskId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(this.task),
+                    headers: {
+                        'accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.getTasks();
+                    this.task = new Task();
+                    this.taskId = null;
+                });
+            } else {
+                fetch('/api/tasks',{
+                    method: 'POST',
+                    body: JSON.stringify(this.task),
+                    headers: {
+                        'accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.getTasks();
+                });
 
-            this.task = new Task();
+                this.task = new Task();
+            }
         },
         deleteTask (task) {
             fetch(`/api/tasks/${task._id}`, {
@@ -112,6 +134,14 @@ export default {
             .then(data => {
                 console.log(data);
                 this.getTasks();
+            });
+        },
+        updateTask (task) {
+            this.taskId = task._id;
+            fetch(`/api/tasks/${task._id}`)
+            .then(response => response.json())
+            .then(data => {
+                this.task = new Task(data.title, data.description);
             });
         }
     }
