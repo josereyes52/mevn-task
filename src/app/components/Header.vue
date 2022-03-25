@@ -6,8 +6,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="/task">Task</a>
-            <a class="nav-item nav-link" href="/feature">Features</a>
+            <router-link to="/">
+                <a class="nav-item nav-link active" href="/">Home</a>
+            </router-link>
+            <router-link to="/tasks">
+                <a class="nav-item nav-link" href="/tasks">Tasks</a>
+            </router-link>
             </div>
         </div>
     </nav>
