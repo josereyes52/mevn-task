@@ -31,6 +31,6 @@ app.use('/api/tasks', require('./routes/task'));
 app.use(express.static(__dirname + '/public'));
 
 // Server is listening on port 3000
-app.listen(app.get('port'), () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Server is running on port", app.get('port'));
 });
