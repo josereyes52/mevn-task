@@ -5,6 +5,8 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import TasksList from './components/TasksList.vue';
 import Home from './components/Home.vue';
 import App from './components/App.vue';
+import Task from './components/Task.vue';
+import EditTask from './components/EditTask.vue';
 
 // routes -- config
 const routes = [
@@ -17,6 +19,16 @@ const routes = [
         path: '/tasks',
         name: 'Tasks',
         component: TasksList 
+    },
+    {
+        path: '/task/:id',
+        name: 'Task',
+        component: Task
+    },
+    {
+        path: '/task/edit/:id',
+        name: 'EditTask',
+        component: EditTask
     }
 ]
 

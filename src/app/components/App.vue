@@ -1,16 +1,22 @@
 <template>
-  <div id="nav">
-      <Header></Header>
-  </div>
-  <router-view />
+
+    <Header></Header>
+
+    <router-view />
+
+
+    <Footer></Footer>
+
 </template>
 
 <script>
 import Header from './Header.vue';
+import Footer from './Footer.vue';
 
 export default {
     components: {
-        Header
+        Header,
+        Footer
     },
     setup() {
         
