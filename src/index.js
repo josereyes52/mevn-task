@@ -3,9 +3,14 @@ const morgan = require("morgan");
 const mongose = require("mongoose");
 
 const app = express();
-mongose.connect(process.env.MONGODB_URI || 'mongodb+srv://root:Admin@task-app.mbfb4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true })
-        .then(connect => console.log('connected to mongodb..'))
-        .catch(e => console.log('could not connect to mongodb', e))
+const uri = 'mongodb+srv://root:Admin@task-app.mbfb4.mongodb.net/Task?retryWrites=true&w=majority&ssl=true';
+
+mongose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+    })
+    .then(connect => console.log('connected to mongodb..'))
+    .catch(e => console.log('could not connect to mongodb', e));
 
 module.exports = {mongose}
 
