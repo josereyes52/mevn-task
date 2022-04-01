@@ -10,11 +10,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    await Task.findById(req.params.id, (err, task) => {
-        if (err) return res.status(500).send(err);
-        if (!task) return res.status(404).send(`The task with the given ID ${req.params.id} was not found.`);
-        res.json(task);
-    });
+    await Task.findById(req.params.id)
+        .then(task => res.json(task))
+        .catch(err => res.status(404).json({ success: false }));
 });
 
 
@@ -25,10 +23,9 @@ router.post('/', async (req, res) => {
         title,
         description
     });
-    await newTask.save();
-    res.json({
-        status: "Task saved"
-    });
+    await newTask.save()
+        .then(task => res.json(task))
+        .catch(err => res.status(500).json({ success: false }));
 });
 
 // Update a task by its ID and save it to the database
@@ -37,18 +34,16 @@ router.put('/:id', async (req, res) => {
     await Task.findByIdAndUpdate(req.params.id, {
         title,
         description
-    });
-    res.json({
-        status: "Task updated"
-    });
+    })
+        .then(task => res.json(task))
+        .catch(err => res.status(500).json({ success: false }));
 });
 
 // Delete a task by its ID
 router.delete('/:id', async (req, res) => {
-    await Task.findByIdAndDelete(req.params.id);
-    res.json({
-        status: "Task deleted"
-    });
+    await Task.findByIdAndDelete(req.params.id)
+        .then(task => res.json(task))
+        .catch(err => res.status(500).json({ success: false }));
 });
 
 module.exports = router;
